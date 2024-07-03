@@ -11,7 +11,7 @@ export type CardData = {
   type: string;
   modified: string;
   thumbnail: PathImages;
-  images?: PathImages;
+  images?: PathImages[];
   creators: Creators;
   characters: Characters;
   stories: Stories;

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { CardData } from '../../shared/types/card.types';
+import Card from './Card';
 
 type CardListProps = {
   cards: CardData[];
@@ -11,7 +12,7 @@ class CardList extends Component<CardListProps> {
     return (
       <ul>
         {cards.map((card) => {
-          return <li key={card.id}>{card.id}</li>;
+          return <Card key={card.id} card={card} />;
         })}
       </ul>
     );
