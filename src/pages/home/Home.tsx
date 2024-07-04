@@ -70,6 +70,7 @@ class Home extends Component<object, HomeState> {
         {this.state?.cards && !!this.state?.cards.length && (
           <CardList cards={this.state.cards} />
         )}
+        {!this.state?.cards.length && <p>Nothing was found</p>}
       </div>
     );
   }
