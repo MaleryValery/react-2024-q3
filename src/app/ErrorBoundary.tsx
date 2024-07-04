@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react';
+import ErrorElement from '../shared/ui/ErrorElement';
 
 type ErrorState = {
   isError: boolean;
@@ -21,7 +22,7 @@ class ErrorBoundary extends Component<ErrorProps, ErrorState> {
     const { children } = this.props;
     const { isError } = this.state;
     if (isError) {
-      return <h1>Rick messed up, try later</h1>;
+      return <ErrorElement />;
     }
     return children;
   }
