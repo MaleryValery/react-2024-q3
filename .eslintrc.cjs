@@ -11,7 +11,14 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
 
-  plugins: ['react-refresh', 'react-compiler', '@typescript-eslint', 'react', 'react-hooks', 'prettier'],
+  plugins: [
+    'react-refresh',
+    'react-compiler',
+    '@typescript-eslint',
+    'react',
+    'react-hooks',
+    'prettier',
+  ],
   rules: {
     'react-compiler/react-compiler': 'error',
     'react-refresh/only-export-components': [
