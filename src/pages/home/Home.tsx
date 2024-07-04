@@ -30,9 +30,10 @@ class Home extends Component<object, HomeState> {
   }
 
   handlerFetchSearch = async () => {
+    console.log(this.state.searchValue || '');
     try {
       this.setState({ isLoading: true });
-      const data = await getAllComics(this.state.searchValue);
+      const data = await getAllComics(this.state.searchValue || '');
       if (data) {
         this.setState({
           cards: data.results,
@@ -58,7 +59,7 @@ class Home extends Component<object, HomeState> {
 
   render() {
     return (
-      <>
+      <div className="flex flex-col items-center gap-10 p-10">
         <SearchForm
           onSubmit={this.onSubmit}
           searchValue={this.state.searchValue}
@@ -69,7 +70,7 @@ class Home extends Component<object, HomeState> {
         {this.state?.cards && !!this.state?.cards.length && (
           <CardList cards={this.state.cards} />
         )}
-      </>
+      </div>
     );
   }
 }

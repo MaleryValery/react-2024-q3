@@ -12,12 +12,20 @@ type SearchFormState = {
 class SearchForm extends Component<SearchFormState> {
   render() {
     return (
-      <Form onSubmit={this.props.onSubmit}>
+      <Form
+        onSubmit={this.props.onSubmit}
+        className="flex min-w-64 gap-4 sm:min-w-96"
+      >
         <SearchBar
           value={this.props.searchValue}
           onChange={this.props.onChange}
         />
-        <Button type="submit">search</Button>
+        <Button
+          className="rounded-lg bg-black p-2 uppercase text-white"
+          type="submit"
+        >
+          search
+        </Button>
       </Form>
     );
   }
