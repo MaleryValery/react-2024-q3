@@ -30,7 +30,6 @@ class Home extends Component<object, HomeState> {
   }
 
   handlerFetchSearch = async () => {
-    console.log(this.state.searchValue || '');
     try {
       this.setState({ isLoading: true });
       const data = await getAllComics(this.state.searchValue || '');
@@ -70,7 +69,9 @@ class Home extends Component<object, HomeState> {
         {this.state?.cards && !!this.state?.cards.length && (
           <CardList cards={this.state.cards} />
         )}
-        {!this.state?.cards.length && <p>Nothing was found</p>}
+        {!this.state?.cards.length && !this.state.isLoading && (
+          <p>Nothing was found</p>
+        )}
       </div>
     );
   }

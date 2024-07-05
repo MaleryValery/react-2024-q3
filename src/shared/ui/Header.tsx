@@ -19,11 +19,16 @@ class Header extends Component {
 
   render() {
     return (
-      <header className="bg- flex w-full bg-stone-800 p-6">
+      <header className="bg- flex w-full gap-5 bg-stone-800 p-6">
         <h1 className="text-3xl font-semibold uppercase text-red-600">
           Marvel comics
         </h1>
-        <Button className="border border-white px-2 py-1 text-white" onClick={this.handleError}>error</Button>
+        <Button
+          className="border border-white px-2 py-1 text-white"
+          onClick={this.handleError}
+        >
+          error
+        </Button>
       </header>
     );
   }
