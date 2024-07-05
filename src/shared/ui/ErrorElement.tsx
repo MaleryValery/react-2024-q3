@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function ErrorElement() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-20">
@@ -5,6 +7,12 @@ function ErrorElement() {
         Wow, something went wrong...
       </h1>
       <div className="block h-44 w-44 bg-[url('./shared/assets/notfound.svg')] bg-cover bg-center bg-no-repeat" />
+      <Link
+        to="/"
+        className="rounded-md border-2 border-black px-4 py-2 transition-all duration-300 hover:bg-black hover:text-white"
+      >
+        Back to home page
+      </Link>
     </div>
   );
 }

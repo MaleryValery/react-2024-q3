@@ -1,16 +1,34 @@
 import { CardData } from '../../shared/types/card.types';
 import getShortName from '../../shared/utils/getShortName';
 
+import img from '../../shared/assets/cover_image.jpg';
+
 type CardProps = {
   card: CardData;
 };
+
 function Card({ card }: CardProps) {
+  // const location = useLocation();
+
+  const image = card.thumbnail.path
+    ? `${card.thumbnail.path}.${card.thumbnail.extension}`
+    : img;
+
+  // const handleClick = useCallback(
+  //   (event: MouseEvent<HTMLAnchorElement>) => {
+  //     if (location.pathname === '/') {
+  //       event.preventDefault();
+  //     }
+  //   },
+  //   [location.pathname]
+  // );
+
   return (
-    <li className="flex w-full flex-col overflow-hidden rounded-lg bg-gray-100 shadow-lg sm:h-64 sm:flex-row dark:bg-gray-500">
+    <li className="flex w-full flex-col overflow-hidden rounded-lg bg-gray-100 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-md hover:shadow-red-400 sm:h-64 sm:flex-row dark:bg-gray-500">
       <div className="flex-[2_1_0]">
         <img
           className="m-0 h-80 w-full object-cover object-center sm:h-full"
-          src={`${card.thumbnail?.path}.${card.thumbnail?.extension}`}
+          src={image}
         />
       </div>
 

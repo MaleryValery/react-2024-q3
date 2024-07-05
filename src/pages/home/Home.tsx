@@ -59,7 +59,7 @@ const Home = memo(() => {
 
       {isLoading && <Loader />}
       {cards && !!cards.length && <CardList cards={cards} />}
-      {!cards.length && <p>Nothing was found</p>}
+      {!cards.length && !isLoading && <p>Nothing was found</p>}
     </div>
   );
 });
