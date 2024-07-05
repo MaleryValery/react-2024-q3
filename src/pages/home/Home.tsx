@@ -1,4 +1,11 @@
-import { ChangeEvent, Component, FormEvent } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { getAllComics } from '../../service/apiService';
 import { SERCH_KEY } from '../../shared/consts/consts';
 import { CardData } from '../../shared/types/card.types';
@@ -6,74 +13,55 @@ import Loader from '../../shared/ui/Loader';
 import CardList from '../cards/CardList';
 import SearchForm from '../cards/SearchForm';
 
-type HomeState = {
-  cards: CardData[];
-  searchValue: string;
-  isLoading: boolean;
-};
+const Home = memo(() => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [cards, setCards] = useState<CardData[]>([]);
+  const [searchValue, setSearchValue] = useState(
+    localStorage.getItem(SERCH_KEY.searchValue) || ''
+  );
 
-class Home extends Component<object, HomeState> {
-  constructor(props: object) {
-    super(props);
-
-    this.state = {
-      isLoading: false,
-      cards: [],
-      searchValue: localStorage.getItem(SERCH_KEY.searchValue) || '',
-    };
-
-    this.handlerFetchSearch = this.handlerFetchSearch.bind(this);
-  }
-
-  componentDidMount() {
-    this.handlerFetchSearch();
-  }
-
-  handlerFetchSearch = async () => {
-    console.log(this.state.searchValue || '');
+  const handlerFetchSearch = useCallback(async () => {
     try {
-      this.setState({ isLoading: true });
-      const data = await getAllComics(this.state.searchValue || '');
+      setIsLoading(true);
+      const data = await getAllComics(searchValue || '');
       if (data) {
-        this.setState({
-          cards: data.results,
-        });
+        setCards(data.results);
       }
     } catch (error) {
       throw new Error('Somethimg went wrong');
     } finally {
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
-  };
+  }, [searchValue]);
 
-  handlerQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchValue: event.target.value });
+  useEffect(() => {
+    handlerFetchSearch();
+  }, [handlerFetchSearch]);
+
+  const handlerQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
 
     localStorage.setItem(SERCH_KEY.searchValue, event.target.value || '');
   };
 
-  onSubmit = (event: FormEvent) => {
+  const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    this.handlerFetchSearch();
+    handlerFetchSearch();
   };
 
-  render() {
-    return (
-      <div className="flex flex-col items-center gap-10 p-10">
-        <SearchForm
-          onSubmit={this.onSubmit}
-          searchValue={this.state.searchValue}
-          onChange={this.handlerQueryChange}
-        />
+  return (
+    <div className="flex flex-col items-center gap-10 p-10">
+      <SearchForm
+        onSubmit={onSubmit}
+        searchValue={searchValue}
+        onChange={handlerQueryChange}
+      />
 
-        {this.state.isLoading && <Loader />}
-        {this.state?.cards && !!this.state?.cards.length && (
-          <CardList cards={this.state.cards} />
-        )}
-        {!this.state?.cards.length && <p>Nothing was found</p>}
-      </div>
-    );
-  }
-}
+      {isLoading && <Loader />}
+      {cards && !!cards.length && <CardList cards={cards} />}
+      {!cards.length && <p>Nothing was found</p>}
+    </div>
+  );
+});
 
 export default Home;

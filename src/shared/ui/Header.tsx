@@ -20,7 +20,10 @@ function Header() {
       <h1 className="text-3xl font-semibold uppercase text-red-600">
         Marvel comics
       </h1>
-      <Button className="border border-white p-2" onClick={handleError}>
+      <Button
+        className="border border-white px-2 py-1 text-white"
+        onClick={handleError}
+      >
         error
       </Button>
     </header>
