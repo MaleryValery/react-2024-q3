@@ -1,9 +1,5 @@
-import { Component } from 'react';
-
-class Layout extends Component {
-  render() {
-    return <div></div>;
-  }
+function Layout() {
+  return <div></div>;
 }
 
 export default Layout;
