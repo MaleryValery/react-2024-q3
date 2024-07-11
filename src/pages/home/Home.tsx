@@ -1,52 +1,35 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import { getAllComics } from '../../service/apiService';
+import { ChangeEvent, FormEvent, memo, useCallback, useState } from 'react';
+import { BASE_URL } from '../../shared/config/config';
 import { SERCH_KEY } from '../../shared/consts/consts';
-import { CardData } from '../../shared/types/card.types';
+import useFetch from '../../shared/hooks/useFetch';
+import useStorage from '../../shared/hooks/useStorage';
+import ErrorElement from '../../shared/ui/ErrorElement';
 import Loader from '../../shared/ui/Loader';
 import CardList from '../cards/CardList';
 import SearchForm from '../cards/SearchForm';
 
 const Home = memo(() => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [cards, setCards] = useState<CardData[]>([]);
-  const [searchValue, setSearchValue] = useState(
-    localStorage.getItem(SERCH_KEY.searchValue) || ''
+  const { setStorage, getStorage, storageValue } = useStorage(
+    SERCH_KEY.searchValue
+  );
+  const [searchValue, setSearchValue] = useState(getStorage());
+  const { data, isLoading, error, setSearch } = useFetch(
+    BASE_URL,
+    storageValue
   );
 
-  const handlerFetchSearch = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const data = await getAllComics(searchValue || '');
-      if (data) {
-        setCards(data.results);
-      }
-    } catch (error) {
-      throw new Error('Somethimg went wrong');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [searchValue]);
-
-  useEffect(() => {
-    handlerFetchSearch();
-  }, [handlerFetchSearch]);
+  const handlerFetchSearch = useCallback(() => {
+    setSearch(searchValue);
+  }, [searchValue, setSearch]);
 
   const handlerQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
-
-    localStorage.setItem(SERCH_KEY.searchValue, event.target.value || '');
   };
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
     handlerFetchSearch();
+    setStorage(searchValue);
   };
 
   return (
@@ -58,8 +41,11 @@ const Home = memo(() => {
       />
 
       {isLoading && <Loader />}
-      {cards && !!cards.length && <CardList cards={cards} />}
-      {!cards.length && !isLoading && <p>Nothing was found</p>}
+      {data?.results && !!data.results.length && (
+        <CardList cards={data?.results} />
+      )}
+      {!data?.results.length && !isLoading && <p>Nothing was found</p>}
+      {error && <ErrorElement />}
     </div>
   );
 });
