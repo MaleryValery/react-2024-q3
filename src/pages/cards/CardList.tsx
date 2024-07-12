@@ -1,17 +1,20 @@
-import { CardData } from '../../shared/types/card.types';
+import { MetaData } from '../../shared/types/response.type';
+
 import Card from './Card';
 
 type CardListProps = {
-  cards: CardData[];
+  data: MetaData;
 };
 
-function CardList({ cards }: CardListProps) {
+function CardList({ data }: CardListProps) {
   return (
-    <ul className="grid max-w-screen-2xl grid-cols-1 justify-center justify-items-center gap-5 py-10 lg:grid-cols-2 2xl:grid-cols-3">
-      {cards.map((card) => {
-        return <Card key={card.id} card={card} />;
-      })}
-    </ul>
+    <>
+      <ul className="grid max-w-screen-2xl grid-cols-1 justify-center justify-items-center gap-5 py-10 lg:grid-cols-2 2xl:grid-cols-3">
+        {data.results.map((card) => {
+          return <Card key={card.id} card={card} />;
+        })}
+      </ul>
+    </>
   );
 }
 

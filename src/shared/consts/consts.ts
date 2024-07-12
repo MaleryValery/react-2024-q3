@@ -12,3 +12,7 @@ export const ENDPOINT = {
 export const SEARCH_TYPE = {
   titleStartsWith: `titleStartsWith`,
 };
+
+export const PAGINATION = {
+  limit: 5,
+};
