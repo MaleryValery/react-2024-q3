@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { getComicsById } from '../../service/apiService';
 import { CardData } from '../../shared/types/card.types';
 import ErrorElement from '../../shared/ui/ErrorElement';
@@ -12,11 +12,13 @@ function CardDetails() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState('');
   const [card, setCard] = useState<CardData | null>(null);
+  const location = useLocation();
 
   const fetchCardDetails = useCallback(async () => {
+    const searchId = id?.split('&')[0].split('=')[1] || '';
     try {
       setIsLoading(true);
-      const data = await getComicsById(id || '');
+      const data = await getComicsById(searchId || '');
       setCard(data?.results[0] || null);
     } catch (error) {
       setIsError((error as Error).message);
@@ -51,7 +53,7 @@ function CardDetails() {
               <p>Pages: {card.pageCount}</p>
             )}
             {card.series?.resourceURI && <p>Series: {card.series.name}</p>}
-            <Link to="/">
+            <Link to={`/${location.search}`}>
               <div className="rounded-md border-2 border-red-500 px-4 py-2 text-center transition-all duration-300 hover:bg-red-500 hover:text-black">
                 close
               </div>

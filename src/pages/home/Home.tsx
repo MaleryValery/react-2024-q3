@@ -35,7 +35,6 @@ const Home = memo(() => {
     setSearchParams({ page: '1' });
   };
 
-  console.log('🚀 ~ Home ~ isLoading:', isLoading);
   return (
     <div className="flex flex-col items-center gap-10 p-10">
       <SearchForm

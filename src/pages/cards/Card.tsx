@@ -1,5 +1,5 @@
 import { MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import img from '../../shared/assets/cover_image.jpg';
 import { CardData } from '../../shared/types/card.types';
 import getShortName from '../../shared/utils/getShortName';
@@ -9,6 +9,7 @@ type CardProps = {
 };
 
 function Card({ card }: CardProps) {
+  const [searchParams] = useSearchParams();
   const image = card.thumbnail.path
     ? `${card.thumbnail.path}.${card.thumbnail.extension}`
     : img;
@@ -22,7 +23,7 @@ function Card({ card }: CardProps) {
   return (
     <li className="flex w-full">
       <Link
-        to={`/${card.id}`}
+        to={`/details=${card.id}&?page=${searchParams.get('page') || 1}`}
         onClick={handleClick}
         className="flex w-full flex-col overflow-hidden rounded-lg bg-gray-100 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-md hover:shadow-red-400 sm:h-64 sm:flex-row dark:bg-gray-500"
       >

@@ -8,7 +8,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/:id" element={<CardDetails />} />
+          <Route path=":id" element={<CardDetails />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
