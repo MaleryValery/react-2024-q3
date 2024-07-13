@@ -11,7 +11,11 @@ type SearchFormState = {
 
 function SearchForm({ searchValue, onSubmit, onChange }: SearchFormState) {
   return (
-    <Form onSubmit={onSubmit} className="flex min-w-64 gap-4 sm:min-w-96">
+    <Form
+      onSubmit={onSubmit}
+      className="flex min-w-64 gap-4 sm:min-w-96"
+      data-testid="form-test"
+    >
       <SearchBar value={searchValue} onChange={onChange} />
       <Button
         className="rounded-lg bg-black p-2 uppercase text-white"

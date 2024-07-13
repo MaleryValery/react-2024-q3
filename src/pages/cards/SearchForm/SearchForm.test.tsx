@@ -1,5 +1,5 @@
 import useStorage from '@/shared/hooks/useStorage/useStorage';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import ue from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import SearchForm from './SearchForm';
@@ -34,14 +34,14 @@ describe('SearchForm', () => {
     );
 
     const user = ue.setup();
+    const form = screen.getByTestId('form-test');
     const input = screen.getByRole('searchbox');
-    const button = screen.getByText(/search/i);
 
     expect(input).toBeInTheDocument();
     expect(submitSpy).not.toHaveBeenCalled();
 
     await user.type(input, 'Ironman');
-    await user.click(button);
+    fireEvent.submit(form);
 
     expect(submitSpy).toHaveBeenCalled();
     setStorage('Ironman');
@@ -59,13 +59,15 @@ describe('SearchForm', () => {
 
     const user = ue.setup();
     const input = screen.getByRole('searchbox');
-    const button = screen.getByText(/search/i);
+
+    const form = screen.getByTestId('form-test');
 
     expect(input).toBeInTheDocument();
     expect(submitSpy).not.toHaveBeenCalled();
 
     await user.type(input, 'apapapa');
-    await user.click(button);
+
+    fireEvent.submit(form);
 
     expect(submitSpy).toHaveBeenCalled();
     setStorage('apapapa');
