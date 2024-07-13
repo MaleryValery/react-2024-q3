@@ -20,6 +20,13 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       all: true,
+      exclude: [
+        '**/config.*',
+        '**/*.d.ts',
+        '**/*.config.*',
+        '**/*.types.*',
+        '**/consts.*',
+      ],
     },
   },
 });

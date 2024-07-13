@@ -58,11 +58,17 @@ function Pagination({ data }: PaginatinProps) {
   return (
     <div className="flex items-center justify-center gap-8 p-12 text-4xl">
       <Button
+        data-testid="first-button"
+        name="First page"
+        aria-label="First Page"
         className={`${edgearrow} bg-[url('./shared/assets/first-arrow.svg')]`}
         onClick={() => onChangePage(0)}
         disabled={curPage === 1}
       />
       <Button
+        data-testid="prev-button"
+        name="Prev page"
+        aria-label="Prev Page"
         className={`${arrow} bg-[url('./shared/assets/prev-arrow.svg')]`}
         onClick={onPrevButton}
         disabled={curPage === 1}
@@ -71,11 +77,17 @@ function Pagination({ data }: PaginatinProps) {
         {generateButtons()}
       </div>
       <Button
+        data-testid="next-button"
+        name="Next page"
+        aria-label="Next Page"
         className={`${arrow} bg-[url('./shared/assets/next-arrow.svg')]`}
         onClick={onNextButton}
         disabled={curPage === totalPage}
       />
       <Button
+        data-testid="last-button"
+        name="Last page"
+        aria-label="Last Page"
         className={`${edgearrow} bg-[url('./shared/assets/last-arrow.svg')]`}
         onClick={onLastPage}
         disabled={curPage === totalPage}

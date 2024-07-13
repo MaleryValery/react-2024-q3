@@ -15,7 +15,7 @@ function CardDetails() {
   const location = useLocation();
 
   const fetchCardDetails = useCallback(async () => {
-    const searchId = id?.split('&')[0].split('=')[1] || '';
+    const searchId = id;
     try {
       setIsLoading(true);
       const data = await getComicsById(searchId || '');

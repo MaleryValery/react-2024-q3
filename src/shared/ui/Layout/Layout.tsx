@@ -34,7 +34,7 @@ function Layout() {
             onClick={(e) => e.stopPropagation()}
             className={`${path.pathname.includes('details') ? 'ml-auto mt-16 w-1/2' : ''}`}
           >
-            <Outlet />
+            <Outlet data-testid="outlet" />
           </div>
         </div>
       </div>
