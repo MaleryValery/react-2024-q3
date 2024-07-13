@@ -38,26 +38,26 @@ function CardDetails() {
     : img;
 
   return (
-    <div className="m-8 h-full max-w-[50%] overflow-hidden rounded-3xl bg-black text-white">
+    <div className="relative m-8 overflow-hidden rounded-3xl bg-black text-white">
       {!isLoading && isError && <ErrorElement />}
       {isLoading && !isError && <Loader />}
       {!isLoading && !isError && !!card && (
         <div className="flex flex-col items-center gap-4 p-8">
-          <h2 className="text-xl">{card.title || 'unknown'}</h2>
+          <Link to={`/${location.search}`}>
+            <div className="absolute right-4 top-4 rounded-full border-2 border-red-500 px-2 py-1 transition-all duration-300 hover:bg-white hover:text-black">
+              ❌
+            </div>
+          </Link>
+          <h2 className="pt-4 text-xl">{card.title || 'unknown'}</h2>
           <div className="w-1/3 rounded-lg bg-green-600 p-8">
             <img className="w-full" src={image} alt={card.title} />
           </div>
-          <div className="flex flex-col gap-2 text-3xl">
+          <div className="flex flex-col gap-2 text-lg">
             <p>{card.description}</p>
             {card.pageCount && card.pageCount > 0 && (
               <p>Pages: {card.pageCount}</p>
             )}
             {card.series?.resourceURI && <p>Series: {card.series.name}</p>}
-            <Link to={`/${location.search}`}>
-              <div className="rounded-md border-2 border-red-500 px-4 py-2 text-center transition-all duration-300 hover:bg-red-500 hover:text-black">
-                close
-              </div>
-            </Link>
           </div>
         </div>
       )}
