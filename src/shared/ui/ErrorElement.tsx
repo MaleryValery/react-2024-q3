@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom';
 
 function ErrorElement() {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-20">
+    <div
+      className="flex h-full w-full flex-col items-center justify-center gap-4 p-20"
+      data-testid="error-element"
+    >
       <h1 className="skew-x-10 inline-block skew-y-1 transform text-2xl font-bold uppercase tracking-wider text-black">
         Wow, something went wrong...
       </h1>

@@ -7,7 +7,7 @@ type FormProps = {
 
 function Form({ children, className, ...rest }: FormProps) {
   return (
-    <form {...rest} className={className}>
+    <form name="search-form" {...rest} className={className}>
       {children}
     </form>
   );

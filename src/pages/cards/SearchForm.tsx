@@ -16,6 +16,7 @@ function SearchForm({ searchValue, onSubmit, onChange }: SearchFormState) {
       <Button
         className="rounded-lg bg-black p-2 uppercase text-white"
         type="submit"
+        name="submit"
       >
         search
       </Button>

@@ -16,7 +16,10 @@ function Header() {
   };
 
   return (
-    <header className="bg- flex w-full gap-6 bg-stone-800 p-6">
+    <header
+      className="bg- flex w-full gap-6 bg-stone-800 p-6"
+      data-testid="header"
+    >
       <h1 className="text-3xl font-semibold uppercase text-red-600">
         Marvel comics
       </h1>

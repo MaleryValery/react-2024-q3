@@ -1,19 +1,8 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import CardDetails from '../pages/cards/CardDetails';
-import NotFound from '../pages/NotFound/NotFound';
-import Layout from '../shared/ui/Layout';
+import { RouterProvider } from 'react-router-dom';
+import router from './Router';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path=":id" element={<CardDetails />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -7,10 +7,29 @@ export type CardData = {
   startYear: number;
   endYear: number;
   rating: string;
+  digitalId?: number;
+  variantDescription?: string;
+  variants?: [];
+  dates?: {
+    type: string;
+    date: string;
+  }[];
+
+  collections?: [];
+  collectedIssues?: [];
   pageCount?: number;
+  issueNumber?: number;
+  textObjects?: string[];
+  isbn?: string;
   type: string;
+  ean?: string;
+  issn?: string;
+  format?: string;
   modified: string;
+  prices?: Price[];
   thumbnail: PathImages;
+  upc?: string;
+  diamondCode?: string;
   images?: PathImages[];
   creators: Creators;
   characters: Characters;
@@ -25,6 +44,10 @@ export type CardData = {
 type Url = {
   type: string;
   url: string;
+};
+type Price = {
+  type: string;
+  price: number;
 };
 
 type PathImages = {
@@ -70,6 +93,6 @@ type Comics = {
 type Events = {
   available: number;
   collectionURI: string;
-  items?: Item;
+  items?: Item[];
   returned: number;
 };

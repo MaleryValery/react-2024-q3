@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, memo, useCallback, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { BASE_URL } from '../../shared/config/config';
 import { SERCH_KEY } from '../../shared/consts/consts';
 import useFetch from '../../shared/hooks/useFetch';
@@ -10,14 +10,21 @@ import Pagination from '../../shared/ui/Pagination';
 import CardList from '../cards/CardList';
 import SearchForm from '../cards/SearchForm';
 
-const Home = memo(() => {
+const Home = memo(function Home() {
+  const navigate = useNavigate();
   const { setStorage, getStorage } = useStorage(SERCH_KEY.searchValue);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(getStorage());
+
+  const page = Number(searchParams.get('page'));
+
+  // if (page < 1 || isNaN(page)) {
+  //   navigate('/');
+  // }
   const { data, isLoading, error, setSearch } = useFetch(
     BASE_URL,
     searchValue,
-    Number(searchParams.get('page')) || 1
+    parseInt(searchParams.get('page') ?? '1', 10) || 1
   );
 
   const handlerFetchSearch = useCallback(() => {
@@ -36,7 +43,7 @@ const Home = memo(() => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-10 p-10">
+    <div className="flex flex-col items-center gap-10 p-10" data-testid="home">
       <SearchForm
         onSubmit={onSubmit}
         searchValue={searchValue}

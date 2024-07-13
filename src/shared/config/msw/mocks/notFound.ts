@@ -1,0 +1,16 @@
+export const notFound = {
+  code: 200,
+  status: 'Ok',
+  copyright: '© 2024 MARVEL',
+  attributionText: 'Data provided by Marvel. © 2024 MARVEL',
+  attributionHTML:
+    '<a href="http://marvel.com">Data provided by Marvel. © 2024 MARVEL</a>',
+  etag: 'b2347f99b9352fc127ec9601f37547291e1bcc3e',
+  data: {
+    offset: 0,
+    limit: 5,
+    total: 0,
+    count: 0,
+    results: [],
+  },
+};

@@ -31,6 +31,7 @@ function Card({ card }: CardProps) {
           <img
             className="m-0 h-80 w-full object-cover object-center sm:h-full"
             src={image}
+            alt={card.title}
           />
         </div>
 
