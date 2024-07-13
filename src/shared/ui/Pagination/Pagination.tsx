@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
-import { MetaData } from '../types/response.type';
-import Button from './Button';
+import { MetaData } from '../../types/response.type';
+import Button from '../Button/Button';
 
 type PaginatinProps = {
   data: MetaData;

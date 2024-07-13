@@ -1,7 +1,7 @@
+import Button from '@/shared/ui/Button/Button';
+import Form from '@/shared/ui/Form/Form';
+import SearchBar from '@/shared/ui/SearchBar/SearchBar';
 import { ChangeEvent, FormEvent } from 'react';
-import Button from '../../shared/ui/Button';
-import Form from '../../shared/ui/Form';
-import SearchBar from '../../shared/ui/SearchBar';
 
 type SearchFormState = {
   searchValue: string;

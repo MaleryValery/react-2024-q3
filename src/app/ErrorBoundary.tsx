@@ -1,5 +1,5 @@
+import ErrorElement from '@/shared/ui/ErrorElement/ErrorElement';
 import { Component, ReactNode } from 'react';
-import ErrorElement from '../shared/ui/ErrorElement';
 
 type ErrorState = {
   isError: boolean;

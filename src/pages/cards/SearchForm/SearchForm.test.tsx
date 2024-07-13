@@ -1,13 +1,15 @@
+import useStorage from '@/shared/hooks/useStorage/useStorage';
 import { cleanup, render, screen } from '@testing-library/react';
 import ue from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-
 import SearchForm from './SearchForm';
 
 const submitSpy = vi.fn();
 const changeSty = vi.fn();
 
 describe('SearchForm', () => {
+  const { setStorage, getStorage } = useStorage('searchValue');
+
   afterEach(() => {
     localStorage.clear();
     cleanup();
@@ -42,6 +44,8 @@ describe('SearchForm', () => {
     await user.click(button);
 
     expect(submitSpy).toHaveBeenCalled();
+    setStorage('Ironman');
+    expect(getStorage()).toBe('Ironman');
   });
 
   it('should not find apapapa', async () => {
@@ -64,5 +68,7 @@ describe('SearchForm', () => {
     await user.click(button);
 
     expect(submitSpy).toHaveBeenCalled();
+    setStorage('apapapa');
+    expect(getStorage()).toBe('apapapa');
   });
 });

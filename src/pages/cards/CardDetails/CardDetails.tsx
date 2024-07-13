@@ -1,11 +1,11 @@
+import { getComicsById } from '@/service/apiService';
+import { CardData } from '@/shared/types/card.types';
+import ErrorElement from '@/shared/ui/ErrorElement/ErrorElement';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { getComicsById } from '../../service/apiService';
-import { CardData } from '../../shared/types/card.types';
-import ErrorElement from '../../shared/ui/ErrorElement';
 
-import img from '../../shared/assets/cover_image.jpg';
-import Loader from '../../shared/ui/Loader';
+import img from '@/shared/assets/cover_image.jpg';
+import Loader from '@/shared/ui/Loader/Loader';
 
 function CardDetails() {
   const { id } = useParams();

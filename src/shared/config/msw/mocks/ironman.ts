@@ -1,4 +1,4 @@
-import { ResponseData } from '../../../types/response.type';
+import { ResponseData } from '@/shared/types/response.type';
 
 export const ironman: ResponseData = {
   code: 200,

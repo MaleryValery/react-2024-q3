@@ -1,26 +1,20 @@
+import { BASE_URL } from '@/shared/config/config';
+import { SERCH_KEY } from '@/shared/consts/consts';
+import useFetch from '@/shared/hooks/useFetch/useFetch';
+import useStorage from '@/shared/hooks/useStorage/useStorage';
+import ErrorElement from '@/shared/ui/ErrorElement/ErrorElement';
+import Loader from '@/shared/ui/Loader/Loader';
+import Pagination from '@/shared/ui/Pagination/Pagination';
 import { ChangeEvent, FormEvent, memo, useCallback, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { BASE_URL } from '../../shared/config/config';
-import { SERCH_KEY } from '../../shared/consts/consts';
-import useFetch from '../../shared/hooks/useFetch';
-import useStorage from '../../shared/hooks/useStorage';
-import ErrorElement from '../../shared/ui/ErrorElement';
-import Loader from '../../shared/ui/Loader';
-import Pagination from '../../shared/ui/Pagination';
-import CardList from '../cards/CardList';
-import SearchForm from '../cards/SearchForm';
+import { useSearchParams } from 'react-router-dom';
+import CardList from '../cards/CardList/CardList';
+import SearchForm from '../cards/SearchForm/SearchForm';
 
 const Home = memo(function Home() {
-  const navigate = useNavigate();
   const { setStorage, getStorage } = useStorage(SERCH_KEY.searchValue);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(getStorage());
 
-  const page = Number(searchParams.get('page'));
-
-  // if (page < 1 || isNaN(page)) {
-  //   navigate('/');
-  // }
   const { data, isLoading, error, setSearch } = useFetch(
     BASE_URL,
     searchValue,

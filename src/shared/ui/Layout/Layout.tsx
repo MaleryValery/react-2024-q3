@@ -1,6 +1,6 @@
+import Home from '@/pages/home/Home';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import Home from '../../pages/home/Home';
-import Header from './Header';
+import Header from '../Header/Header';
 
 function Layout() {
   const path = useLocation();

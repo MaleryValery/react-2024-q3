@@ -1,11 +1,6 @@
-import { useState } from 'react';
-
 const useStorage = (key: string) => {
-  const [storageValue, setStorageValue] = useState<string>('');
-
   const setStorage = (value: string) => {
     localStorage.setItem(key, value);
-    setStorageValue(value);
   };
 
   const getStorage = () => {
@@ -14,7 +9,7 @@ const useStorage = (key: string) => {
     return storage;
   };
 
-  return { setStorage, getStorage, storageValue };
+  return { setStorage, getStorage };
 };
 
 export default useStorage;

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { PARAMS, PUBLIC_API_KEY } from '../config/config';
-import { PAGINATION } from '../consts/consts';
-import { MetaData, ResponseData } from '../types/response.type';
+import { PARAMS, PUBLIC_API_KEY } from '../../config/config';
+import { PAGINATION } from '../../consts/consts';
+import { MetaData, ResponseData } from '../../types/response.type';
 
 const setQueryParams = (searchValue?: string, offset?: number) => {
   if (searchValue && offset) {

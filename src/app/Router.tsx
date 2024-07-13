@@ -1,8 +1,8 @@
+import CardDetails from '@/pages/cards/CardDetails/CardDetails';
+import NotFound from '@/pages/NotFound/NotFound';
+import ErrorElement from '@/shared/ui/ErrorElement/ErrorElement';
+import Layout from '@/shared/ui/Layout/Layout';
 import { createBrowserRouter } from 'react-router-dom';
-import CardDetails from '../pages/cards/CardDetails';
-import NotFound from '../pages/NotFound/NotFound';
-import ErrorElement from '../shared/ui/ErrorElement';
-import Layout from '../shared/ui/Layout';
 
 const router = createBrowserRouter([
   {
@@ -11,14 +11,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorElement />,
     children: [
       {
-        path: '/:id',
+        path: '/details/:id',
         element: <CardDetails />,
       },
-      {
-        path: '*',
-        element: <NotFound />,
-      },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
 

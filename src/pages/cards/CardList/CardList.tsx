@@ -1,7 +1,7 @@
+import { MetaData } from '@/shared/types/response.type';
 import { useLocation } from 'react-router-dom';
-import { MetaData } from '../../shared/types/response.type';
 
-import Card from './Card';
+import Card from '../Card/Card';
 
 type CardListProps = {
   data: MetaData;

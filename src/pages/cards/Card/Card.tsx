@@ -1,8 +1,8 @@
+import img from '@/shared/assets/cover_image.jpg';
+import { CardData } from '@/shared/types/card.types';
+import getShortName from '@/shared/utils/getShortName';
 import { MouseEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import img from '../../shared/assets/cover_image.jpg';
-import { CardData } from '../../shared/types/card.types';
-import getShortName from '../../shared/utils/getShortName';
 
 type CardProps = {
   card: CardData;
