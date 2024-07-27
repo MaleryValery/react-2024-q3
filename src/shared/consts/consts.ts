@@ -1,3 +1,5 @@
+import { Theme } from '../types/theme';
+
 export const SELECT_OPTIONS = [5, 10, 15, 20];
 
 export const SERCH_KEY = {
@@ -15,4 +17,9 @@ export const SEARCH_TYPE = {
 
 export const PAGINATION = {
   limit: 5,
+};
+
+export const initTheme: Theme = {
+  isDark: false,
+  handleTheme: () => {},
 };

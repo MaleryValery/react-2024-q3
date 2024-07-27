@@ -1,14 +1,16 @@
+import { useAppSelector } from '@/app/redux/hooks';
 import { useSearchParams } from 'react-router-dom';
-import { MetaData } from '../../types/response.type';
 import Button from '../Button/Button';
 
-type PaginatinProps = {
-  data: MetaData;
-};
-
-function Pagination({ data }: PaginatinProps) {
-  const { limit, offset, total } = data;
+function Pagination() {
+  const data = useAppSelector((state) => state.cards.cards);
   const [, setSearchParams] = useSearchParams();
+
+  if (!data) {
+    return null;
+  }
+
+  const { offset, limit, total } = data;
 
   const curPage = Math.floor(offset / limit) + 1;
   const totalPage = Math.ceil(total / limit);
@@ -47,12 +49,12 @@ function Pagination({ data }: PaginatinProps) {
         key={pageNum}
         onClick={() => onChangePage(pageNum - 1)}
         title={pageNum.toString()}
-        className={`cursor-pointer p-2 text-2xl font-medium ${curPage === pageNum ? 'text-3xl' : 'text-gray-500'}`}
+        className={`cursor-pointer p-2 text-2xl font-medium ${curPage === pageNum ? 'text-3xl dark:text-gray-300' : 'text-gray-500'}`}
       />
     ));
   };
 
-  const edgearrow = 'h-12 w-12 rounded-full bg-cover disabled:opacity-50';
+  const edgearrow = 'h-12 w-12 rounded-full bg-cover disabled:opacity-50 ';
   const arrow = 'h-8 w-8 rounded-full bg-cover disabled:opacity-50';
 
   return (

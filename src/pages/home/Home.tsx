@@ -1,29 +1,20 @@
-import { BASE_URL } from '@/shared/config/config';
-import { SERCH_KEY } from '@/shared/consts/consts';
-import useFetch from '@/shared/hooks/useFetch/useFetch';
-import useStorage from '@/shared/hooks/useStorage/useStorage';
+import { apiService } from '@/app/redux/apiService';
 import ErrorElement from '@/shared/ui/ErrorElement/ErrorElement';
 import Loader from '@/shared/ui/Loader/Loader';
-import Pagination from '@/shared/ui/Pagination/Pagination';
-import { ChangeEvent, FormEvent, memo, useCallback, useState } from 'react';
+import { ChangeEvent, FormEvent, memo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import CardList from '../cards/CardList/CardList';
 import SearchForm from '../cards/SearchForm/SearchForm';
 
 const Home = memo(function Home() {
-  const { setStorage, getStorage } = useStorage(SERCH_KEY.searchValue);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchValue, setSearchValue] = useState(getStorage());
+  const [searchValue, setSearchValue] = useState('');
 
-  const { data, isLoading, error, setSearch } = useFetch(
-    BASE_URL,
-    searchValue,
-    parseInt(searchParams.get('page') ?? '1', 10) || 1
-  );
-
-  const handlerFetchSearch = useCallback(() => {
-    setSearch(searchValue);
-  }, [searchValue, setSearch]);
+  const { data, isLoading, error, isFetching } =
+    apiService.useGetComicsListQuery({
+      searchValue,
+      offset: parseInt(searchParams.get('page') || '1', 10) || 1,
+    });
 
   const handlerQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -31,10 +22,12 @@ const Home = memo(function Home() {
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    handlerFetchSearch();
-    setStorage(searchValue);
     setSearchParams({ page: '1' });
   };
+
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col items-center gap-10 p-10" data-testid="home">
@@ -44,14 +37,8 @@ const Home = memo(function Home() {
         onChange={handlerQueryChange}
       />
 
-      {isLoading && <Loader />}
-      {data?.results && !!data.results.length && (
-        <>
-          <CardList data={data} />
-          <Pagination data={data} />
-        </>
-      )}
-      {!data?.results.length && !isLoading && <p>Nothing was found</p>}
+      {data?.data?.results && !!data.data.results.length && <CardList />}
+      {!data?.data?.results.length && !isLoading && <p>Nothing was found</p>}
       {error && <ErrorElement />}
     </div>
   );

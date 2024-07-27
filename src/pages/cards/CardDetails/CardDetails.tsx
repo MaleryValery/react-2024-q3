@@ -1,63 +1,58 @@
-import { getComicsById } from '@/service/apiService';
-import { CardData } from '@/shared/types/card.types';
 import ErrorElement from '@/shared/ui/ErrorElement/ErrorElement';
-import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
+import apiService from '@/app/redux/apiService';
+import { setCurrentCard } from '@/app/redux/cardsSlice';
+import { useAppDispatch } from '@/app/redux/hooks';
 import img from '@/shared/assets/cover_image.jpg';
 import Loader from '@/shared/ui/Loader/Loader';
 
 function CardDetails() {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState('');
-  const [card, setCard] = useState<CardData | null>(null);
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
-  const fetchCardDetails = useCallback(async () => {
-    const searchId = id;
-    try {
-      setIsLoading(true);
-      const data = await getComicsById(searchId || '');
-      setCard(data?.results[0] || null);
-    } catch (error) {
-      setIsError((error as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id]);
+  const { data, isLoading, error } = apiService.useGetComicsByIdQuery(
+    parseInt(id ?? '', 10)
+  );
 
-  useEffect(() => {
-    fetchCardDetails();
-  }, [fetchCardDetails]);
-
-  if (!id) return <ErrorElement />;
-
-  const image = card?.thumbnail.path
-    ? `${card.thumbnail.path}.${card.thumbnail.extension}`
+  const image = data?.data?.results[0].thumbnail.path
+    ? `${data.data?.results[0].thumbnail.path}.${data.data?.results[0].thumbnail.extension}`
     : img;
 
   return (
     <div className="relative m-8 overflow-hidden rounded-3xl bg-black text-white">
-      {!isLoading && isError && <ErrorElement />}
-      {isLoading && !isError && <Loader />}
-      {!isLoading && !isError && !!card && (
+      {!isLoading && error && <ErrorElement />}
+      {isLoading && !error && <Loader />}
+      {!isLoading && !error && !!data?.data?.results[0] && (
         <div className="flex flex-col items-center gap-4 p-8">
-          <Link to={`/${location.search}`}>
+          <Link
+            to={`/${location.search}`}
+            onClick={() => dispatch(setCurrentCard(null))}
+          >
             <div className="absolute right-4 top-4 rounded-full border-2 border-red-500 px-2 py-1 transition-all duration-300 hover:bg-white hover:text-black">
               ❌
             </div>
           </Link>
-          <h2 className="pt-4 text-xl">{card.title || 'unknown'}</h2>
+          <h2 className="pt-4 text-xl">
+            {data.data?.results[0].title || 'unknown'}
+          </h2>
           <div className="w-1/3 rounded-lg bg-green-600 p-8">
-            <img className="w-full" src={image} alt={card.title} />
+            <img
+              className="w-full"
+              src={image}
+              alt={data.data?.results[0].title}
+            />
           </div>
           <div className="flex flex-col gap-2 text-lg">
-            <p>{card.description}</p>
-            {card.pageCount && card.pageCount > 0 && (
-              <p>Pages: {card.pageCount}</p>
+            <p>{data.data?.results[0].description}</p>
+            {data.data?.results[0].pageCount &&
+              data.data?.results[0].pageCount > 0 && (
+                <p>Pages: {data.data?.results[0].pageCount}</p>
+              )}
+            {data.data?.results[0].series?.resourceURI && (
+              <p>Series: {data.data?.results[0].series.name}</p>
             )}
-            {card.series?.resourceURI && <p>Series: {card.series.name}</p>}
           </div>
         </div>
       )}
