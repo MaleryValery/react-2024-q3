@@ -7,7 +7,7 @@ function Header() {
 
   return (
     <header
-      className="bg- flex w-full gap-6 bg-slate-950 p-6 dark:bg-indigo-950"
+      className="bg- flex w-full gap-6 bg-zinc-700 p-6 dark:bg-zinc-950"
       data-testid="header"
     >
       <h1 className="text-3xl font-semibold uppercase text-red-600">

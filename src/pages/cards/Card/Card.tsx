@@ -22,14 +22,12 @@ function Card({ card }: CardProps) {
   const dispatch = useAppDispatch();
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    console.log('event link', event);
     if (location.pathname !== '/') {
       event.preventDefault();
     }
   };
 
-  const handlerSelectCard = (event: MouseEvent) => {
-    console.log('event fav', event);
+  const handlerSelectCard = () => {
     dispatch(setSelectedCards(card));
   };
 

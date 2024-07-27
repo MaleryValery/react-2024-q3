@@ -1,8 +1,9 @@
 import useThemeContext from '@/app/context/ContextTheme';
 import { setCurrentCard } from '@/app/redux/cardsSlice';
-import { useAppDispatch } from '@/app/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import Home from '@/pages/home/Home';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import Drawer from '../Drawer/Drawer';
 import Header from '../Header/Header';
 
 function Layout() {
@@ -10,6 +11,9 @@ function Layout() {
   const navigate = useNavigate();
   const { isDark } = useThemeContext();
   const dispatch = useAppDispatch();
+  const { selectedCards } = useAppSelector((state) => state.cards);
+
+  const numberOfSelectedCards = Object.keys(selectedCards).length;
 
   const onClose = () => {
     if (location.pathname.includes('details')) navigate(-1);
@@ -18,7 +22,7 @@ function Layout() {
 
   return (
     <div
-      className={`relative flex min-h-full w-full min-w-full flex-col justify-center dark:bg-indigo-950 ${isDark ? 'dark' : ''}`}
+      className={`relative flex min-h-full w-full min-w-full flex-col justify-center dark:bg-zinc-600 ${isDark ? 'dark' : ''}`}
     >
       <Header />
       <div
@@ -46,6 +50,7 @@ function Layout() {
           </div>
         </div>
       </div>
+      {numberOfSelectedCards > 0 && <Drawer />}
     </div>
   );
 }
