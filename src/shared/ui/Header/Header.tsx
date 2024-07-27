@@ -1,33 +1,24 @@
-import { useEffect, useState } from 'react';
+import useThemeContext from '@/app/context/ContextTheme';
+import { FaLightbulb, FaRegLightbulb } from 'react-icons/fa';
 import Button from '../Button/Button';
 
 function Header() {
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    if (isError) {
-      throw new Error('you get error 💥');
-    }
-    [isError];
-  });
-
-  const handleError = () => {
-    setIsError(!isError);
-  };
+  const { isDark, handleTheme } = useThemeContext();
 
   return (
     <header
-      className="bg- flex w-full gap-6 bg-stone-800 p-6"
+      className="bg- flex w-full gap-6 bg-slate-950 p-6 dark:bg-indigo-950"
       data-testid="header"
     >
       <h1 className="text-3xl font-semibold uppercase text-red-600">
         Marvel comics
       </h1>
-      <Button
-        className="border border-white px-2 py-1 text-white"
-        onClick={handleError}
-      >
-        error
+      <Button onClick={handleTheme}>
+        {isDark ? (
+          <FaLightbulb size={26} className="text-amber-300" />
+        ) : (
+          <FaRegLightbulb size={26} className="text-white" />
+        )}
       </Button>
     </header>
   );
