@@ -1,7 +1,7 @@
 import ErrorElement from '@/shared/ui/ErrorElement/ErrorElement';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import apiService from '@/app/redux/apiService';
+import { apiService } from '@/app/redux/apiService';
 import { setCurrentCard } from '@/app/redux/cardsSlice';
 import { useAppDispatch } from '@/app/redux/hooks';
 import img from '@/shared/assets/cover_image.jpg';

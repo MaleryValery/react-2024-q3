@@ -1,5 +1,5 @@
-import { PARAMS, PUBLIC_API_KEY } from '../config/config';
-import { PAGINATION } from '../consts/consts';
+import { PARAMS, PUBLIC_API_KEY } from '../../config/config';
+import { PAGINATION } from '../../consts/consts';
 
 export const setQueryParams = (searchValue?: string, offset?: number) => {
   if (searchValue && offset) {

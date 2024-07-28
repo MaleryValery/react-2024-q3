@@ -1,4 +1,6 @@
 const getShortName = (name: string) => {
+  if (!name) return '';
+
   if (name.split(' ').length < 8)
     return name
       .split(' ')

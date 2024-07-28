@@ -1,7 +1,7 @@
 import { BASE_URL } from '@/shared/config/config';
 import { ENDPOINT } from '@/shared/consts/consts';
 import { ResponseData } from '@/shared/types/response.type';
-import { setQueryParams } from '@/shared/utils/setQueryParams';
+import { setQueryParams } from '@/shared/utils/setQueryParams/setQueryParams';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 type SearchParams = {
@@ -33,5 +33,3 @@ export const apiService = createApi({
     }),
   }),
 });
-
-export default apiService;

@@ -1,4 +1,4 @@
-import { CardData } from '../types/card.types';
+import { CardData } from '../../types/card.types';
 
 const mainKeys = ['id', 'title', 'description', 'variantDescription'];
 

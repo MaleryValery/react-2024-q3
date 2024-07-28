@@ -1,7 +1,9 @@
+import store from '@/app/redux/store';
 import { ironman } from '@/shared/config/msw/mocks/ironman';
 import { CardData } from '@/shared/types/card.types';
-import getShortName from '@/shared/utils/getShortName';
+import getShortName from '@/shared/utils/getShortName/getShortName';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Card from './Card';
@@ -15,9 +17,11 @@ describe('Card', () => {
 
   it('should render the card component with relevant data', () => {
     render(
-      <MemoryRouter>
-        <Card card={mockCardData} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Card card={mockCardData} />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(
@@ -45,12 +49,14 @@ describe('Card', () => {
 
   it('should open a detailed card component when clicked', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route path="/" element={<Card card={mockCardData} />} />
-          <Route path="/details/:id" element={<div>Details Page</div>} />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route path="/" element={<Card card={mockCardData} />} />
+            <Route path="/details/:id" element={<div>Details Page</div>} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
 
     const link = screen.getByTestId('card');
@@ -67,9 +73,11 @@ describe('Card', () => {
     });
 
     render(
-      <MemoryRouter>
-        <Card card={mockCardData} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Card card={mockCardData} />
+        </MemoryRouter>
+      </Provider>
     );
 
     const link = screen.getByTestId('card');

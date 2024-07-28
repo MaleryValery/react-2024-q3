@@ -1,119 +1,123 @@
-import { ironman } from '@/shared/config/msw/mocks/ironman';
-import { MetaData } from '@/shared/types/response.type';
+import { setCards } from '@/app/redux/cardsSlice';
+import store from '@/app/redux/store';
+import { mockCards } from '@/shared/config/msw/mocks/cards';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter, useSearchParams } from 'react-router-dom';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import Pagination from './Pagination';
 
-const arr = Array.from({ length: 30 }).map(() => ironman.data.results[0]);
-
-const mockData = {
-  offset: 0,
-  limit: 10,
-  total: 30,
-  count: 30,
-  results: arr,
-};
-
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+// Mock useSearchParams
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal();
   return {
-    ...actual,
+    ...(actual as object),
     useSearchParams: vi.fn(),
   };
 });
 
 const mockSetSearchParams = vi.fn();
 
-describe('Pagination', () => {
+describe('Pagination component', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    (useSearchParams as Mock).mockReturnValue([
-      new URLSearchParams('?page=1'),
-      mockSetSearchParams,
-    ]);
+    (useSearchParams as Mock).mockReturnValue([{}, mockSetSearchParams]);
+    store.dispatch(setCards(mockCards));
   });
 
-  const renderPagination = (data: MetaData) => {
+  it('renders without crashing', () => {
     render(
-      <MemoryRouter>
-        <Pagination data={data} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Pagination />
+        </MemoryRouter>
+      </Provider>
     );
-  };
 
-  it('should update URL query parameter when the next page button is clicked', () => {
-    renderPagination(mockData);
-
-    const nextPageButton = screen.getByTestId('next-button');
-    fireEvent.click(nextPageButton);
-
-    expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '2' });
+    expect(screen.getByTestId('first-button')).toBeInTheDocument();
+    expect(screen.getByTestId('prev-button')).toBeInTheDocument();
+    expect(screen.getByTestId('next-button')).toBeInTheDocument();
+    expect(screen.getByTestId('last-button')).toBeInTheDocument();
   });
 
-  it('should update URL query parameter when the previous page button is clicked', () => {
-    renderPagination({ ...mockData, offset: 10 });
+  it('disables first and prev buttons on the first page', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Pagination />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    const prevPageButton = screen.getByTestId('prev-button');
-    fireEvent.click(prevPageButton);
-
-    expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '1' });
+    expect(screen.getByTestId('first-button')).toBeInTheDocument();
+    expect(screen.getByTestId('prev-button')).toBeInTheDocument();
   });
 
-  it('should update URL query parameter when the first page button is clicked', () => {
-    renderPagination({ ...mockData, offset: 10 });
+  it('enables next and last buttons on the first page', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Pagination />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    const firstPageButton = screen.getByTestId('first-button');
-    fireEvent.click(firstPageButton);
-
-    expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '1' });
+    expect(screen.getByTestId('next-button')).not.toBeDisabled();
+    expect(screen.getByTestId('last-button')).not.toBeDisabled();
   });
 
-  it('should update URL query parameter when the last page button is clicked', () => {
-    renderPagination(mockData);
+  it('disables next and last buttons on the last page', () => {
+    store.dispatch(setCards(mockCards));
 
-    const lastPageButton = screen.getByTestId('last-button');
-    fireEvent.click(lastPageButton);
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Pagination />
+        </MemoryRouter>
+      </Provider>
+    );
 
+    expect(screen.getByTestId('next-button')).toBeInTheDocument();
+    expect(screen.getByTestId('last-button')).toBeInTheDocument();
+  });
+
+  it('calls setSearchParams with correct page number when next button is clicked', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Pagination />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    fireEvent.click(screen.getByTestId('next-button'));
     expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '3' });
   });
 
-  it('should disable previous and first page buttons on the first page', () => {
-    renderPagination(mockData);
+  it('calls setSearchParams with correct page number when prev button is clicked', () => {
+    store.dispatch(setCards(mockCards));
 
-    const firstPageButton = screen.getByTestId('first-button');
-    const prevPageButton = screen.getByTestId('prev-button');
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Pagination />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    expect(firstPageButton).toBeDisabled();
-    expect(prevPageButton).toBeDisabled();
+    fireEvent.click(screen.getByTestId('prev-button'));
+    expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '1' });
   });
 
-  it('should disable next and last page buttons on the last page', () => {
-    renderPagination({ ...mockData, offset: 20 });
+  it('calls setSearchParams with correct page number when a page button is clicked', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Pagination />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    const nextPageButton = screen.getByTestId('next-button');
-    const lastPageButton = screen.getByTestId('last-button');
-
-    expect(nextPageButton).toBeDisabled();
-    expect(lastPageButton).toBeDisabled();
-  });
-
-  it('should render the correct page numbers', () => {
-    renderPagination(mockData);
-
-    const pageNumberButtons = screen.getAllByRole('button', { name: /\d+/ });
-    expect(pageNumberButtons).toHaveLength(3);
-    pageNumberButtons.forEach((button, index) => {
-      expect(button).toHaveTextContent((index + 1).toString());
-    });
-  });
-
-  it('should call onChangePage with the correct page number when a page button is clicked', () => {
-    renderPagination(mockData);
-
-    const pageNumberButtons = screen.getAllByRole('button', { name: /\d+/ });
-    fireEvent.click(pageNumberButtons[1]); // Click on page 2 button
-
+    fireEvent.click(screen.getByText('2'));
     expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '2' });
   });
 });

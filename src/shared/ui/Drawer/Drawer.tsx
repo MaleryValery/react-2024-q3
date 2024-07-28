@@ -1,6 +1,6 @@
 import { resetSelectedCards } from '@/app/redux/cardsSlice';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { downloadFile } from '@/shared/utils/downloadFile';
+import { downloadFile } from '@/shared/utils/downloadFile/downloadFile';
 import Button from '../Button/Button';
 
 function Drawer() {

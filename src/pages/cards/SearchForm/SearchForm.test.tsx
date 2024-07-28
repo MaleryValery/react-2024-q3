@@ -1,76 +1,68 @@
-import useStorage from '@/shared/hooks/useStorage/useStorage';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import ue from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { setSearchQuery } from '@/app/redux/cardsSlice';
+import store from '@/app/redux/store';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { MemoryRouter, useSearchParams } from 'react-router-dom';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import SearchForm from './SearchForm';
 
-const submitSpy = vi.fn();
-const changeSty = vi.fn();
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    useSearchParams: vi.fn(),
+  };
+});
 
-describe('SearchForm', () => {
-  const { setStorage, getStorage } = useStorage('searchValue');
+const dispatchSpy = vi.spyOn(store, 'dispatch');
 
-  afterEach(() => {
-    localStorage.clear();
-    cleanup();
-    vi.resetAllMocks();
+describe('SearchForm component', () => {
+  beforeEach(() => {
+    (useSearchParams as Mock).mockReturnValue([new URLSearchParams(), vi.fn()]);
   });
 
-  it('should render the search from component', () => {
+  it('renders the search form', () => {
     render(
-      <SearchForm searchValue={''} onSubmit={submitSpy} onChange={changeSty} />
+      <Provider store={store}>
+        <MemoryRouter>
+          <SearchForm />
+        </MemoryRouter>
+      </Provider>
     );
+
+    expect(screen.getByRole('form')).toBeInTheDocument();
+  });
+
+  it('updates the input value when typed into', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <SearchForm />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'Spider-Man' } });
+
+    expect(input).toHaveValue('Spider-Man');
+  });
+
+  it('dispatches setSearchQuery and sets search params on form submission', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <SearchForm />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const input = screen.getByRole('searchbox');
     const form = screen.getByRole('form');
-    expect(form).toBeInTheDocument();
-  });
 
-  it('should search for Ironman', async () => {
-    render(
-      <SearchForm
-        searchValue={'Ironman'}
-        onSubmit={submitSpy}
-        onChange={changeSty}
-      />
-    );
-
-    const user = ue.setup();
-    const form = screen.getByTestId('form-test');
-    const input = screen.getByRole('searchbox');
-
-    expect(input).toBeInTheDocument();
-    expect(submitSpy).not.toHaveBeenCalled();
-
-    await user.type(input, 'Ironman');
+    fireEvent.change(input, { target: { value: 'Spider-Man' } });
     fireEvent.submit(form);
 
-    expect(submitSpy).toHaveBeenCalled();
-    setStorage('Ironman');
-    expect(getStorage()).toBe('Ironman');
-  });
-
-  it('should not find apapapa', async () => {
-    render(
-      <SearchForm
-        searchValue={'apapapa'}
-        onSubmit={submitSpy}
-        onChange={changeSty}
-      />
-    );
-
-    const user = ue.setup();
-    const input = screen.getByRole('searchbox');
-
-    const form = screen.getByTestId('form-test');
-
-    expect(input).toBeInTheDocument();
-    expect(submitSpy).not.toHaveBeenCalled();
-
-    await user.type(input, 'apapapa');
-
-    fireEvent.submit(form);
-
-    expect(submitSpy).toHaveBeenCalled();
-    setStorage('apapapa');
-    expect(getStorage()).toBe('apapapa');
+    expect(dispatchSpy).toHaveBeenCalledWith(setSearchQuery('Spider-Man'));
   });
 });

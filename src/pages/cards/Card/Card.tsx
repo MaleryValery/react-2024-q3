@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import img from '@/shared/assets/cover_image.jpg';
 import { CardData } from '@/shared/types/card.types';
 import Button from '@/shared/ui/Button/Button';
-import getShortName from '@/shared/utils/getShortName';
+import getShortName from '@/shared/utils/getShortName/getShortName';
 import { MouseEvent } from 'react';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { Link, useSearchParams } from 'react-router-dom';

@@ -1,5 +1,5 @@
-import { CardData } from '../types/card.types';
-import { generateCSV } from './generateCSV';
+import { CardData } from '../../types/card.types';
+import { generateCSV } from '../generateCSV/generateCSV';
 
 export const downloadFile = (
   data: Record<string, CardData>,

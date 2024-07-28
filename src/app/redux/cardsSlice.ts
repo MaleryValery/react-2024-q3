@@ -1,24 +1,29 @@
 import { CardData } from '@/shared/types/card.types';
 import { MetaData } from '@/shared/types/response.type';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import apiService from './apiService';
+import { apiService } from './apiService';
 
 type CardsState = {
   cards: MetaData | null;
   currentCard: CardData | null;
   selectedCards: Record<string, CardData>;
+  searchValue: string;
 };
 
 const initialState: CardsState = {
   cards: null,
   currentCard: null,
   selectedCards: {},
+  searchValue: '',
 };
 
 export const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.searchValue = action.payload;
+    },
     setCards: (state, action: PayloadAction<MetaData>) => {
       state.cards = action.payload;
     },
@@ -60,4 +65,7 @@ export const {
   setCurrentCard,
   setSelectedCards,
   resetSelectedCards,
+  setSearchQuery,
 } = cardsSlice.actions;
+
+export default cardsSlice.reducer;
