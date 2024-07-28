@@ -18,7 +18,7 @@ export const apiService = createApi({
       query: ({ searchValue, offset }) => ({
         url: ENDPOINT.comics,
         params: setQueryParams(searchValue, offset),
-        headets: {
+        headers: {
           'Content-Type': 'application/json',
         },
       }),

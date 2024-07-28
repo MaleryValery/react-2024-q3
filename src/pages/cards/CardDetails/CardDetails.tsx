@@ -16,14 +16,16 @@ function CardDetails() {
     parseInt(id ?? '', 10)
   );
 
-  const image = data?.data?.results[0].thumbnail.path
+  const image = data?.data?.results[0]?.thumbnail.path
     ? `${data.data?.results[0].thumbnail.path}.${data.data?.results[0].thumbnail.extension}`
     : img;
 
+  if (!isLoading && error) return <ErrorElement />;
+
+  if (isLoading && !error) return <Loader />;
+
   return (
     <div className="relative m-8 overflow-hidden rounded-3xl bg-black text-white">
-      {!isLoading && error && <ErrorElement />}
-      {isLoading && !error && <Loader />}
       {!isLoading && !error && !!data?.data?.results[0] && (
         <div className="flex flex-col items-center gap-4 p-8">
           <Link
@@ -35,7 +37,7 @@ function CardDetails() {
             </div>
           </Link>
           <h2 className="pt-4 text-xl">
-            {data.data?.results[0].title || 'unknown'}
+            {data.data?.results[0].title || 'Unknown'}
           </h2>
           <div className="w-1/3 rounded-lg bg-green-600 p-8">
             <img
@@ -45,13 +47,13 @@ function CardDetails() {
             />
           </div>
           <div className="flex flex-col gap-2 text-lg">
-            <p>{data.data?.results[0].description}</p>
+            <p>{data.data?.results[0].description || 'Unknown'}</p>
             {data.data?.results[0].pageCount &&
               data.data?.results[0].pageCount > 0 && (
-                <p>Pages: {data.data?.results[0].pageCount}</p>
+                <p>Pages: {data.data?.results[0].pageCount || 'Unknown'}</p>
               )}
             {data.data?.results[0].series?.resourceURI && (
-              <p>Series: {data.data?.results[0].series.name}</p>
+              <p>Series: {data.data?.results[0].series.name || 'Unknown'}</p>
             )}
           </div>
         </div>

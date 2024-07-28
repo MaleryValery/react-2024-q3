@@ -25,7 +25,6 @@ export default defineConfig({
         '**/*.d.ts',
         '**/*.config.*',
         '**/*.types.*',
-        '**/consts.*',
         '.eslintrc.cjs',
       ],
     },

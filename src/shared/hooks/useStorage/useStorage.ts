@@ -5,7 +5,6 @@ const useStorage = (key: string) => {
 
   const getStorage = () => {
     const storage = localStorage.getItem(key) || '';
-
     return storage;
   };
 

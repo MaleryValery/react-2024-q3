@@ -1,20 +1,16 @@
 import { useLocation } from 'react-router-dom';
 
-import { useAppSelector } from '@/app/redux/hooks';
+import { MetaData } from '@/shared/types/response.type';
 import Pagination from '@/shared/ui/Pagination/Pagination';
 import Card from '../Card/Card';
 
-function CardList() {
+function CardList({ data }: { data: MetaData }) {
   const path = useLocation();
-  const data = useAppSelector((state) => state.cards.cards);
-
-  if (!data) {
-    return null;
-  }
 
   const listStyle = path.pathname.includes('details')
     ? 'grid max-w-screen-2xl grid-cols-1 justify-center justify-items-center gap-5 py-10'
     : 'grid max-w-screen-2xl grid-cols-1 justify-center justify-items-center gap-5 py-10 lg:grid-cols-2 2xl:grid-cols-3';
+
   return (
     <>
       <ul className={`${listStyle}`}>
@@ -23,7 +19,7 @@ function CardList() {
         })}
       </ul>
 
-      <Pagination />
+      <Pagination data={data} />
     </>
   );
 }

@@ -1,9 +1,8 @@
-import { useAppSelector } from '@/app/redux/hooks';
+import { MetaData } from '@/shared/types/response.type';
 import { useSearchParams } from 'react-router-dom';
 import Button from '../Button/Button';
 
-function Pagination() {
-  const data = useAppSelector((state) => state.cards.cards);
+function Pagination({ data }: { data: MetaData }) {
   const [, setSearchParams] = useSearchParams();
 
   if (!data) {

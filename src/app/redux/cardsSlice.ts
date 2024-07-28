@@ -1,17 +1,13 @@
 import { CardData } from '@/shared/types/card.types';
-import { MetaData } from '@/shared/types/response.type';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { apiService } from './apiService';
 
 type CardsState = {
-  cards: MetaData | null;
   currentCard: CardData | null;
   selectedCards: Record<string, CardData>;
   searchValue: string;
 };
 
 const initialState: CardsState = {
-  cards: null,
   currentCard: null,
   selectedCards: {},
   searchValue: '',
@@ -23,9 +19,6 @@ export const cardsSlice = createSlice({
   reducers: {
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
-    },
-    setCards: (state, action: PayloadAction<MetaData>) => {
-      state.cards = action.payload;
     },
     setCurrentCard: (state, action: PayloadAction<CardData | null>) => {
       state.currentCard = action.payload;
@@ -43,25 +36,9 @@ export const cardsSlice = createSlice({
       state.selectedCards = {};
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addMatcher(
-        apiService.endpoints.getComicsList.matchFulfilled,
-        (state, action) => {
-          state.cards = action.payload.data;
-        }
-      )
-      .addMatcher(
-        apiService.endpoints.getComicsById.matchFulfilled,
-        (state, action) => {
-          state.currentCard = action.payload.data.results[0];
-        }
-      );
-  },
 });
 
 export const {
-  setCards,
   setCurrentCard,
   setSelectedCards,
   resetSelectedCards,

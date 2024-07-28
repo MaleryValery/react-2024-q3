@@ -60,16 +60,16 @@ function Card({ card }: CardProps) {
         <div className="flex flex-[3_1_0] flex-col p-3">
           <div className="flex flex-[1_1_0] flex-col justify-start text-gray-800 dark:text-white">
             <h2 className="text-xl font-bold leading-[1.1]">
-              {getShortName(card.title)}
+              {getShortName(card.title) || 'Unknown'}
             </h2>
             <div className="font-[16px] leading-normal text-gray-800 dark:text-white">
-              {`pages - ${card.pageCount}`}
+              {`pages - ${card.pageCount || 'Unknown'}`}
             </div>
           </div>
           <div className={`flex flex-[1_1_0] flex-col`}>
             <p className="text-gray-400">Series</p>
             <p className="capitalize text-zinc-600 dark:text-stone-100">
-              {card.series?.name}
+              {card.series?.name || 'Unknown'}
             </p>
           </div>
           <div className={`flex flex-[1_1_0] flex-col`}>

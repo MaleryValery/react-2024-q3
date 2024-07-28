@@ -20,13 +20,18 @@ function Home() {
     return <Loader />;
   }
 
+  if (!data && !isLoading) {
+    return <p>Nothing was found</p>;
+  }
+
+  if (error) {
+    return <ErrorElement />;
+  }
+
   return (
     <div className="flex flex-col items-center gap-10 p-10" data-testid="home">
       <SearchForm />
-
-      {data?.data?.results && !!data.data.results.length && <CardList />}
-      {!data?.data?.results.length && !isLoading && <p>Nothing was found</p>}
-      {error && <ErrorElement />}
+      {data && <CardList data={data.data} />}
     </div>
   );
 }
